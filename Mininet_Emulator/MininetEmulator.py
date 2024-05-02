@@ -86,7 +86,7 @@ def Exp01_Haptic_Data(net):
     server = net.get("Server")
     master = net.get("Master")
 
-    makeTerm(slave,cmd='python3 ../1_Exp_Haptic_Data/slave.py; read')
+    makeTerm(slave,cmd='python3 ../1_Exp_Haptic_Data/haptic_slaveside.py; read')
     time.sleep(1)
     makeTerm(server, cmd='python3 ../1_Exp_Haptic_Data/haptic_serverside.py; read')
     time.sleep(1)
