@@ -1,5 +1,6 @@
-# IOT_EXP1: This a repo of mininet based on the IOT experiment 
+# ECI-Elderly-Caring-Monitoring-System
 
+This repository discusses the implementation code for " Enabling Pandemic-Resilient Healthcare: Edge-Computing-Assisted Real-Time Elderly Caring Monitoring System" article.
 ### How to Setup Experiment Environment 
 Installation steps:
 1. Install git
