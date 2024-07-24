@@ -1,4 +1,4 @@
-# ECI-Elderly-Caring-Monitoring-System
+# ECI-Elderly-TeleCaring-Monitoring-System
 
 This repository discusses the implementation code for " Enabling Pandemic-Resilient Healthcare: Edge-Computing-Assisted Real-Time Elderly Caring Monitoring System" article.
 ### How to Setup Experiment Environment 
