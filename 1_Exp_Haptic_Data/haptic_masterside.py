@@ -36,7 +36,7 @@ def packet_backwarding():
         latency_us = (recv_time - send_time) * 1e6
         packets.append((packet_n, latency_us))
     print("Done !!!!")
-    output_filename = "HD_{}".format(n_packets_expected)
+    output_filename = "HD_{}.txt".format(n_packets_expected)
     save_packet_latencies(packets, n_packets_expected, output_filename)
     print("Closing...")
     sock_in.close()

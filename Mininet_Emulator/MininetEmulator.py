@@ -10,6 +10,7 @@ from mininet.log import setLogLevel, info
 from mininet.link import TCLink
 import time
 from mininet.term import makeTerm
+import random
 
 exec(open("./mininet_settings").read())
 
@@ -31,9 +32,20 @@ def myTopology():
     s5 = net_emu.addSwitch('s5', cls=OVSKernelSwitch, failMode='standalone', stp=1)
 
     info( '#**********# Adding Hosts #**********#\n')
-    MS = net_emu.addHost('Master', ip='10.0.0.1/8')
-    Server = net_emu.addHost('Server', ip='10.0.0.2/8')
-    SS = net_emu.addHost('Slave', ip='10.0.0.3/8')
+    MS = net_emu.addHost('Master', ip='10.0.0.41/8')
+    Server = net_emu.addHost('Server', ip='10.0.0.42/8')
+    SS = net_emu.addHost('Slave', ip='10.0.0.43/8')
+
+    #### Add external host
+    n=15
+    for h in range(1, n + 1):
+        host_a = net_emu.addHost('a%s' % h)
+        bw = random.randint(1,10)
+        net_emu.addLink(host_a, s0, bw=bw, delay='0.2ms') # S2 --- (a1, a2, ..., a5) --> d=0.2ms, bw= 1-10
+
+        host_b = net_emu.addHost('b%s' % h)
+        bw = random.randint(1,10)
+        net_emu.addLink(host_b, s5, bw=bw, delay='0.2ms') # S1 --- (b1, b2, ..., b5) --> d=0.2ms, bw= 1-10`
 
     info( '#**********# Linking host with OVS_vswitches #**********#\n')
     # Ht_swt_linkConfig = {'delay':'0', 'bw' : 100}
@@ -78,19 +90,41 @@ def myTopology():
 
     return(net_emu)
 
-def Exp01_Haptic_Data(net):
+def Exp01_Haptic_Data(net,n):
 
     print ("*** Loading IoTactileSim for Experiment Number 01 (START) >>>")
+    n=n
+    a = []
+    b = []
+    for i in range(1, n + 1):
+        a.append(net['a%s' % i])
+        b.append(net['b%s' % i])
+    
+    print('*** Testing connectivity between pairs')
+    for i in range(n):
+        net.ping(hosts=[a[i], b[i]])
+
 
     slave = net.get("Slave")
     server = net.get("Server")
     master = net.get("Master")
 
-    makeTerm(slave,cmd='python3 ../1_Exp_Haptic_Data/haptic_slaveside.py; read')
-    time.sleep(1)
-    makeTerm(server, cmd='python3 ../1_Exp_Haptic_Data/haptic_serverside.py; read')
-    time.sleep(1)
-    makeTerm(master, cmd='python3 ../1_Exp_Haptic_Data/ms_comm.py; read')
+
+    for i in range(1, n + 2):
+        if i==n+1:
+            print(f' Programe Script Runing  {i}')
+            makeTerm(slave,cmd='python3 ../1_Exp_Haptic_Data/haptic_slaveside.py; read')
+            time.sleep(1)
+            makeTerm(server, cmd='python3 ../1_Exp_Haptic_Data/haptic_serverside.py; read')
+            time.sleep(1)
+            makeTerm(master, cmd='python3 ../1_Exp_Haptic_Data/ms_comm.py; read')
+        else:
+            print('External Host runing')
+            a[i - 1].cmd('netcat -l 1234 >/dev/null &')  # A host on S1 acts as Server
+            time.sleep(random.random() * 2)  # Each transmission starts after a random delay between 0.2 and 2.0 secs
+            MB = random.randint(3, 630)  # Random amount of MB to transmit
+            b[i - 1].cmd('dd if=./file.test bs={}M count=1 | nc 10.0.0.{} 1234 &'.format(MB, i))
+
 
     event4 = next(sgui.send())
     if event4 == 'Display Result':
@@ -110,7 +144,7 @@ def Exp01_Haptic_Data(net):
         sgui2.window.un_hide()
         sgui2.select_packet_HD()
         sgui2.window.hide()
-        Exp01_Haptic_Data(net)
+        Exp01_Haptic_Data(net,n)
 
 
 
@@ -133,7 +167,8 @@ if __name__ == '__main__':
         print("Please Select Number of Packets for Sensor Data")
         sgui2.select_packet_HD()
         sgui2.window.hide()
-        Exp01_Haptic_Data(net)
+        host=15
+        Exp01_Haptic_Data(net,n=host)
             
     if event2 == 'Exit Mininet' or sgui.sg.WIN_CLOSED:
         print("You Selected Exit, See You! Again....")

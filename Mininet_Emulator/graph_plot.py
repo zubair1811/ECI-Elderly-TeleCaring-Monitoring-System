@@ -43,7 +43,7 @@ def draw_timeseries(packets_all_hosts, save_dir,graphname):
             plt.ylabel("Latency (ms)")
 
     plt.tight_layout()
-    plt.ylim(0,10)
+    plt.ylim(0,140)
     plt.xlim(0, len(packet_ns))
 
     plot_filename = os.path.join(save_dir, graphname)
