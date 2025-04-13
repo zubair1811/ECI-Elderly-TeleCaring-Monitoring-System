@@ -1,8 +1,8 @@
-PC_1 = "10.0.0.1"
-PC_2 = "10.0.0.2"
-PC_3 = "10.0.0.3"
+PC_1 = "10.0.0.41"
+PC_2 = "10.0.0.42"
+PC_3 = "10.0.0.43"
 packet_len=128
-n_packets=1000
+n_packets=10000
 send_rate_kbytes_per_s=1
 n_packets_expected=n_packets
 

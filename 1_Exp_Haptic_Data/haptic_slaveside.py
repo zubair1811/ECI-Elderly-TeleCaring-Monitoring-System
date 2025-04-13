@@ -18,8 +18,8 @@ def packet_forwarding():
             print(f"Recieve-->Slave <--- {data}, {len(data)}")
             if not data:
                 break
-            # send_addr = (target_ip, listen_port + 1)
-            # sock_in.sendto(data, send_addr)
+            send_addr = (target_ip, listen_port + 1)
+            sock_in.sendto(data, send_addr) ### TODO used to send data baxck
             # print(f"B-->Slave <--- {data}, {len(data)}")  # TODO
             # sock_in.sendall(data) # TODO for sent all
         except KeyboardInterrupt:
@@ -31,10 +31,10 @@ def packet_forwarding():
 # packet_backwarding()
 if __name__ == '__main__':
     receiver = multiprocessing.Process(target=packet_forwarding)
-#     # receiver = multiprocessing.Process(target=packet_recieve(listen_port))
+    # receiver = multiprocessing.Process(target=packet_recieve(listen_port))
 #
     receiver.start()
-#     # receiver.start()
+    # receiver.start()
 #
     receiver.join()
 #     # receiver.join()
