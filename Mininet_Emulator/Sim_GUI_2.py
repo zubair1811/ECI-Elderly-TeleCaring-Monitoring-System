@@ -6,10 +6,10 @@ sg.theme('DefaultNoMoreNagging')
 # #---------------- Windiw layout----
 
 mini_frame1=[
-    [sg.Button('10'), sg.Button('100'),sg.Button('1000'), sg.Button('10000')]
+    [sg.Button('10'), sg.Button('100'),sg.Button('1000')]
 ]
 mini_frame2=[
-    [sg.Button('HD-10',button_color=('white','green')), sg.Button('HD-100',button_color=('white','green')),sg.Button('HD-1000',button_color=('white','green')), sg.Button('HD-10000',button_color=('white','green'))]
+    [sg.Button('HD-10',button_color=('white','green')), sg.Button('HD-100',button_color=('white','green')),sg.Button('HD-1000',button_color=('white','green'))]
 ]
 
 mini_frame3=[
@@ -117,7 +117,7 @@ def graph_plotting_Exp1():
     else :
         # print("Open HD-1000")
         file = 'HD_10000'
-    file_path='../1_Exp_Haptic_Data/HD_latencyfiles/{}'.format(file)
+    file_path='../1_Exp_Haptic_Data/HD_latencyfiles/{}.txt'.format(file)
     ploting.read_latencies_file(file_path)
     save_dir = '../1_Exp_Haptic_Data/HD_graphs'
     ploting.draw_timeseries(ploting.read_latencies_file(file_path),save_dir,file)
